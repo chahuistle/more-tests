@@ -37,8 +37,8 @@ deploy:
   # artifact will be installed in our testing instance if it is a .war file
 - skip_cleanup: true
   provider: script
-  script: mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
-          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
+  script: aamvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
+          aafind target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
   on:
     branch: development
     condition: '"$TRAVIS_EVENT_TYPE" = "push"'
@@ -54,7 +54,7 @@ deploy:
     tags: true
 
 # always delete sensitive information
-after_deploy: rm -f /tmp/travis_rsa
+after_script: rm -f /tmp/travis_rsa
 
 # change according to your needs, but we recommend to deactivate email notifications
 # for now, we configured Travis to send a notification to the #travis-ci channel 
