@@ -24,10 +24,14 @@ UNENCRYPTED_FILE_DESTINATION="/tmp/travis_deployment_key"
 # file separator
 FILE_SEPARATOR="###-#-#-#-quick-and-dirty-file-separator-THOU-SHALL-NOT-PASS-#-#-#-###"
 
-## IMPORTANT: the variables starting with "encrypted_..." are different for every repository, make sure you edit this line
-echo "Decrypting secret sauce..."
+########################################################################
+##                                                                    ##
+## IMPORTANT: the variables starting with "encrypted_" are different  ##
+## for every repository, make sure you edit the names accordingly.    ##
+##                                                                    ##
+########################################################################          <---DO NOT EDIT PAST THE SHOWN COLUMN, LEST YOU WANT TO OPEN PANDORA'S BOX
 openssl aes-256-cbc -K $encrypted_3f7041caa607_key -iv $encrypted_3f7041caa607_iv -in travis_deployment_key.enc -out $UNENCRYPTED_FILE_DESTINATION -d
-echo "Decryption return code: $?"
+echo "Secret sauce recipe preparation returned: $?"
 
 # find in which line is our file separator
 FILE_SEPARATOR_LINE=`grep --line-number "$FILE_SEPARATOR" $UNENCRYPTED_FILE_DESTINATION | cut --fields 1 --delimiter=:`
@@ -43,7 +47,7 @@ if [ "$THE_EAGLE_HAS_LANDED" = "wizzard" ]; then
       # make sure to change file permissions on this very special file
       chmod 600 $RSA_PRIVATE_KEY_DESTINATION 
 else
-      echo "[DUN GOOFED] I'm afraid I can't do that, Dave. Something went wrong with the deployment key file. Private key will not be extracted and deployment WILL fail."
+      (>&2 echo "[DUN GOOFED] I'm afraid I can't do that, Dave. Something went wrong with the deployment key file. Private key will not be extracted and deployment WILL fail.")
       # better safe than sorry
       rm -f RSA_PRIVATE_KEY_DESTINATION
 fi

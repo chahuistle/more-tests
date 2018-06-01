@@ -1,5 +1,7 @@
 # Build script for Travis CI
 #
+
+# non-sudo hosts are faster, according to Travis CI documentation
 sudo: false
 language: java
 jdk: openjdk8
@@ -66,7 +68,8 @@ notifications:
     on_success: never
     on_failure: never
   slack: 
-    on_success: always
+    on_success: never
     on_failure: always
+    # edit the following section if you want to get slack notifications
     rooms:
       - secure: "KbCA/3Joqv98COAd19zk7hthc7XMPrniow/d1M9siGrEhTvdqnG/UiOT84B9MDzT3phXaz0OwvdkS62nYcDHJi7e5nt8e36st33cYbV/VxSTCMAXevPeQdkm6CeRltnrL2R4OMb9ONpLvCeGxPgIqt7M9qbHfqQOVJ+S1euQM8xyfhr6OcLqmovzyvgdDrvqkn+0wABc+p7nWmqsfXrojFcoxbbuUoBp7Fn9X+Ac8IzEhgKT2QJoxBd3jAGIJA0WzgW7jDZ568b9eG0Ike4s17cepsVQTgrO7/+VSYSH7+F5fGBTPrT81i0Nb759Zm1tSBtw4jR8mm/0IYfqIYWPyLy80ABuqeEzRh/DYiP4wWekBHt5nGg9ft2V5cIVgV+YRVOzSsFjSmTZ4UTJsIntjj/03pEiJ0diEQu0twV1ivhzbgGO50GtFHwHbGc0YjbI8bZlDdFjnSPSaGo18jt8uBgiWO2N/9Mxja57UTgxidUQgWatiN/VZwFrDQE242jr9/hAF4Lnx4ZhG/84PfqLo3fyY+hIZUe2p3QMRgqbv3r/jAMU2+NrvJu056ISWIEYsJbOSFtsucJqQltBsqrS1ej8dTqSnQHuZ6dgTj7vmXhjhOYwQe/n8rLx/w5ZsmFTA+xNXCrBdX8sKMy2fUJl6Grc2MjcU6SkBYAKXFDqQ5s="
