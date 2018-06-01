@@ -40,7 +40,7 @@ deploy:
 - skip_cleanup: true
   provider: script
   script: echo $BOGUS_VARIABLE && mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
-          find target/ -name *.war -exec rsync --verbose -e "ssh -o StrictHostKeyChecking=no" -e "ssh -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
+          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
   on:
     branch: development
     condition: '"$TRAVIS_EVENT_TYPE" = "push"'
@@ -50,13 +50,14 @@ deploy:
 - skip_cleanup: true
   provider: script
   script: mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy && 
-          find target/ -name *.war -exec rsync --verbose -e "ssh -o StrictHostKeyChecking=no" -e "ssh -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
+          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
   on:
     branch: master
     tags: true
 
 # always delete sensitive information
-after_deploy: echo \"Deleting all your secrets\" && rm -f /tmp/travis_rsa
+after_script: echo \"Forgetting your secrets (after_script) \" && rm -f /tmp/travis_rsa
+after_deploy: echo \"Forgetting your secrets (after_deploy) \" && rm -f /tmp/travis_rsa
 
 # change according to your needs, but we recommend to deactivate email notifications
 # for now, we configured Travis to send a notification to the #travis-ci channel 
