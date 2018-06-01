@@ -41,7 +41,7 @@ if [ "$THE_EAGLE_HAS_LANDED" = "wizzard" ]; then
       # the second part of the unencrypted file contains a private key, output the last part of the unencrypted file into the desired destination
       tail --lines +$(( $FILE_SEPARATOR_LINE + 1 )) $UNENCRYPTED_FILE_DESTINATION > $RSA_PRIVATE_KEY_DESTINATION
       # make sure to change file permissions on this very special file
-      chmod 600 $RSA_PRIVATE_KEY_DESTINATION      
+      chmod 600 $RSA_PRIVATE_KEY_DESTINATION 
 else
       echo "[DUN GOOFED] I'm afraid I can't do that, Dave. Something went wrong with the deployment key file. Private key will not be extracted and deployment WILL fail."
 fi

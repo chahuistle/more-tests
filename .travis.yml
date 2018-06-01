@@ -39,7 +39,7 @@ deploy:
   # artifact will be installed in our testing instance if it is a .war file
 - skip_cleanup: true
   provider: script
-  script: echo $BOGUS_VARIABLE && mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
+  script: mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
           find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
   on:
     branch: development
@@ -56,8 +56,8 @@ deploy:
     tags: true
 
 # always delete sensitive information
-after_script: echo \"Forgetting your secrets (after_script) \" && rm -f /tmp/travis_rsa
-after_deploy: echo \"Forgetting your secrets (after_deploy) \" && rm -f /tmp/travis_rsa
+after_script: echo "Forgetting your secrets (after_script) " && rm -f /tmp/travis_rsa
+after_deploy: echo "Forgetting your secrets (after_deploy) " && rm -f /tmp/travis_rsa
 
 # change according to your needs, but we recommend to deactivate email notifications
 # for now, we configured Travis to send a notification to the #travis-ci channel 
@@ -66,6 +66,7 @@ notifications:
     on_success: never
     on_failure: never
   slack: 
-    rooms: "$SLACK_TOKEN"
     on_success: always
     on_failure: always
+    rooms:
+      - secure: "ls4XVkF/lMzkfqnvysyUBELvZs1A+5PpW6rE1xlklMShPkvEkRoAQYaRko24P3AVNpMH8yKcDo0Ivf2BRRXyadLJvgzv1Hut0YKgk2SjymoaAY/mVmkqckBevp4ZAjs3PlfBRZNUHT3OG6bdQQ9bk2k5iYbojpGdjtJ6+yG2fDE5rkeZV9YnwQLG7XKvYRSAe6Xw6B1oTGbGNrPkK5aNTnUL9Sd4KIV4hoiYiqFN5xg5vPncrYFDHwCuUNbJYB8H+gk48Ms6eq/asQUuiptj0qs8imFCQQT+PS7+z+kPfFA+poRIdXJQj4kAtYeXVyUGZuevBwJNvmsU7TfIxsyHnp/Ai0BweS4d7rR3VAanFxzHKVtIv82SSjb3Wxx139pl2sCaWQqdKJi/++Q2sHBBLMr/sLpKQdZSxpS2tda7XEjQGn80K9lzLnC+rxgG1wKCH5C/rffl/byXp3tHrk4RwfepqZ55uZJCN+m9ERcaCoZyk2/GKobd/af3p/JZkFnyHFt37JuQgkZBKktQIo4HJ16TTN/VmuRvk0esMEBbXoFP9bjdZJnK4Z+NbDdGjoA7a8tI7yxI555/RQaLxSN+hAJq0guSqn33tx+aWXHZ8LgHvS2fthVY4u0PYICoYuw291xZWCzXBJlak2k/b73jArPoSZdS1UZJ159R++8F79I="
