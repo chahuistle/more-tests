@@ -33,6 +33,9 @@ script: mvn --quiet --activate-profiles !development-build,!release-build --sett
 # unencrypt file with sensitive information only if needed
 before_deploy: source ./.travis.decrypt.sh /tmp/travis_rsa
 
+# deployments ALWAYS succeed, at least for Travis, this makes after_deploy ALWAYS being executed
+# this is a hack, yeah and we should probably look in the forums/issues and then prepare a
+# simple test case if it hasn't been reported
 deploy:
   # as agreed in our SOP, builds on development branch will deploy to our maven repository after validating
   # the artifact has a proper SNAPSHOT version
@@ -41,7 +44,7 @@ deploy:
   provider: script
   script: ( mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
           find target/ -name *.war -exec rsync -e "ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \; ) ||
-          rm -f /tmp/travis_rsa
+          true
   on:
     branch: development
     condition: '"$TRAVIS_EVENT_TYPE" = "push"'
@@ -52,7 +55,7 @@ deploy:
   provider: script
   script: ( mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy && 
           find target/ -name *.war -exec rsync -e "ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \; ) ||
-          rm -f /tmp/travis_rsa
+          true
   on:
     branch: master
     tags: true
