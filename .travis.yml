@@ -40,7 +40,7 @@ deploy:
 - skip_cleanup: true
   provider: script
   script: mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
-          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
+          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
   on:
     branch: development
     condition: '"$TRAVIS_EVENT_TYPE" = "push"'
@@ -50,7 +50,7 @@ deploy:
 - skip_cleanup: true
   provider: script
   script: mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy && 
-          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
+          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \;
   on:
     branch: master
     tags: true
