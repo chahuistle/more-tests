@@ -37,8 +37,8 @@ deploy:
   # artifact will be installed in our testing instance if it is a .war file
 - skip_cleanup: true
   provider: script
-  script: ( aamvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
-          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \; ) ||
+  script: ( mvn --quiet --activate-profiles development-build,!release-build --settings .travis.settings.xml deploy &&
+          find target/ -name *.war -exec rsync -e "ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \; ) ||
           rm -f /tmp/travis_rsa
   on:
     branch: development
@@ -49,7 +49,7 @@ deploy:
 - skip_cleanup: true
   provider: script
   script: ( mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy && 
-          find target/ -name *.war -exec rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \; ) ||
+          find target/ -name *.war -exec rsync -e "ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /tmp/travis_rsa" {} $TESTING_USERNAME@$TESTING_SERVER:~/liferay*/deploy \; ) ||
           rm -f /tmp/travis_rsa
   on:
     branch: master
