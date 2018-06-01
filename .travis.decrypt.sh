@@ -44,6 +44,8 @@ if [ "$THE_EAGLE_HAS_LANDED" = "wizzard" ]; then
       chmod 600 $RSA_PRIVATE_KEY_DESTINATION 
 else
       echo "[DUN GOOFED] I'm afraid I can't do that, Dave. Something went wrong with the deployment key file. Private key will not be extracted and deployment WILL fail."
+      # better safe than sorry
+      rm -f RSA_PRIVATE_KEY_DESTINATION
 fi
 
 # remove the unencrypted file
