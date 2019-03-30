@@ -1,3 +1,0 @@
-# Travis Build Tests
-Yes.
-
