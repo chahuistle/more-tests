@@ -1,0 +1,3 @@
+[submodule "submodules/sample-service"]
+	path = submodules/sample-service
+	url = http://github.com/chahuistle/sample-service
